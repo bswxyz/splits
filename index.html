@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('splits-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>Splits — the Arden City Marathon</title>
+<meta name="description" content="Splits is the Arden City Marathon: 42.195 km through six boroughs, one bad hill, and a finish line in Civic Square. Course profile, pace calculator, race weekend schedule and entry." />
+<meta name="theme-color" content="#f4f2ee" />
+<meta name="color-scheme" content="light dark" />
+<meta property="og:title" content="Splits — the Arden City Marathon" />
+<meta property="og:description" content="Four hours. Forty-two K. Zero traffic. The fourth Sunday of October, the city belongs to the runners." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ffd23f'/%3E%3Cpath d='M8 24 L14 8 h4 L12 24 Z' fill='%2316181b'/%3E%3Cpath d='M16 24 L22 8 h4 L20 24 Z' fill='%23e0342b'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+<div class="film" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <a class="brand" href="./" aria-label="Splits home">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect width="32" height="32" rx="7" fill="var(--accent)" />
+      <path d="M8 24 L14 8 h4 L12 24 Z" fill="#16181b" />
+      <path d="M16 24 L22 8 h4 L20 24 Z" fill="#e0342b" />
+    </svg>
+    <span class="brand-word">Splits</span>
+  </a>
+  <nav class="nav-links" aria-label="Primary">
+    <a href="#course">Course</a>
+    <a href="#pace">Pace</a>
+    <a href="#weekend">Weekend</a>
+    <a href="./guide/">Guide</a>
+    <a class="nav-cta" href="#register">Claim a bib</a>
+    <button id="themeBtn" class="theme-btn" type="button" aria-pressed="false" aria-label="Switch to dark mode" title="Toggle light / dark">
+      <svg class="ico-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><g stroke-linecap="round"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></g></svg>
+      <svg class="ico-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============ hero — countdown to the cannon ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow mono">[ Arden City Marathon · <span id="raceDate">fourth Sunday of October</span> ]</p>
+        <h1 id="hero-title" class="hero-title">
+          <span class="line"><span>Four hours.</span></span>
+          <span class="line"><span>Forty-two K.</span></span>
+          <span class="line"><span><em>Zero traffic.</em></span></span>
+        </h1>
+        <p class="hero-sub">One morning a year, Arden closes every road between the Docklands and
+          Civic Square and hands the city to 28,000 pairs of shoes. The cannon fires at 07:00.
+          The buses are free if you're wearing a bib. The rest is up to your legs.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#register">Claim your bib</a>
+          <a class="btn btn-ghost" href="#course">Walk the course →</a>
+        </div>
+        <dl class="hero-facts">
+          <div><dt class="mono">Field</dt><dd><span class="c-num" data-to="28000">0</span></dd></div>
+          <div><dt class="mono">Gain</dt><dd><span class="c-num" data-to="187">0</span> m</dd></div>
+          <div><dt class="mono">Aid stations</dt><dd><span class="c-num" data-to="16">0</span></dd></div>
+          <div><dt class="mono">Bands</dt><dd><span class="c-num" data-to="42">0</span></dd></div>
+        </dl>
+      </div>
+
+      <div class="clock-wrap">
+        <div class="clock" role="timer" aria-label="Countdown to race day">
+          <div class="clock-top mono">
+            <span>RACE CLOCK · ARDEN 42</span>
+            <span class="clock-live"><i class="clock-dot" aria-hidden="true"></i><span id="clockState">to the gun</span></span>
+          </div>
+          <div class="clock-cells">
+            <div class="clock-cell"><span class="clock-num" id="cdDays">––</span><span class="clock-lbl mono">days</span></div>
+            <span class="clock-colon" aria-hidden="true">:</span>
+            <div class="clock-cell"><span class="clock-num" id="cdHours">––</span><span class="clock-lbl mono">hrs</span></div>
+            <span class="clock-colon" aria-hidden="true">:</span>
+            <div class="clock-cell"><span class="clock-num" id="cdMins">––</span><span class="clock-lbl mono">min</span></div>
+            <span class="clock-colon" aria-hidden="true">:</span>
+            <div class="clock-cell"><span class="clock-num" id="cdSecs">––</span><span class="clock-lbl mono">sec</span></div>
+          </div>
+          <div class="clock-foot mono">
+            <span>GUN 07:00 · CIVIC SQUARE TAPE</span>
+            <span>COURSE CLOSES 14:30</span>
+          </div>
+          <noscript><p class="clock-noscript mono">Race day is the fourth Sunday of October — gun at 07:00.</p></noscript>
+        </div>
+        <p class="clock-cap mono">Corrals open 05:30 — the clock doesn't wait, and neither do we.</p>
+      </div>
+    </div>
+    <p class="hero-scroll mono" aria-hidden="true">scroll — the course is downhill from here (it isn't)</p>
+  </section>
+
+  <div class="tape" aria-hidden="true"></div>
+
+  <!-- ============ the course — self-drawing elevation profile ============ -->
+  <section id="course" class="course">
+    <span class="wm" aria-hidden="true">42.195</span>
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker mono reveal">[ The course ]</p>
+        <h2 class="reveal">Six boroughs.<br />One bad hill.</h2>
+        <p class="lede reveal">This is the honest profile — drawn from the city survey, not the
+          brochure. Point at any marker for the elevation, the grade, and what the locals call it.
+          Reservoir Hill peaks at kilometre 20. Nobody warns you about the Overpass at 34. We just did.</p>
+      </div>
+
+      <div class="course-grid">
+        <figure class="profile-fig reveal" aria-labelledby="profile-cap">
+          <svg id="profileSvg" class="profile-svg" viewBox="0 0 1000 340" role="group" aria-label="Course elevation profile — interactive. Twelve markers from the Docklands start to the Civic Square finish; select one for details.">
+            <!-- elevation grid -->
+            <g class="profile-grid" aria-hidden="true">
+              <line x1="40" y1="280" x2="980" y2="280" />
+              <line x1="40" y1="230" x2="980" y2="230" />
+              <line x1="40" y1="180" x2="980" y2="180" />
+              <line x1="40" y1="130" x2="980" y2="130" />
+              <line x1="40" y1="80"  x2="980" y2="80" />
+              <text x="34" y="284" text-anchor="end">0</text>
+              <text x="34" y="234" text-anchor="end">25</text>
+              <text x="34" y="184" text-anchor="end">50</text>
+              <text x="34" y="134" text-anchor="end">75</text>
+              <text x="34" y="84"  text-anchor="end">100 m</text>
+              <text x="151" y="302" text-anchor="middle">5K</text>
+              <text x="263" y="302" text-anchor="middle">10K</text>
+              <text x="374" y="302" text-anchor="middle">15K</text>
+              <text x="486" y="302" text-anchor="middle">20K</text>
+              <text x="597" y="302" text-anchor="middle">25K</text>
+              <text x="708" y="302" text-anchor="middle">30K</text>
+              <text x="820" y="302" text-anchor="middle">35K</text>
+              <text x="931" y="302" text-anchor="middle">40K</text>
+            </g>
+            <!-- filled area under the line -->
+            <path class="profile-area" aria-hidden="true" d="M40 264 L62.3 262 L84.6 266 L106.8 260 L129.1 258 L151.4 256 L173.7 248 L196 236 L218.2 226 L240.5 218 L262.8 212 L285.1 196 L307.4 178 L329.6 164 L351.9 176 L374.2 188 L396.5 198 L418.8 182 L441 164 L463.3 148 L485.6 136 L507.9 144 L530.2 160 L552.4 176 L574.7 192 L597 204 L619.3 214 L641.6 224 L663.8 232 L686.1 234 L708.4 236 L730.7 228 L753 218 L775.2 202 L797.5 186 L819.8 200 L842.1 216 L864.4 232 L886.6 244 L908.9 252 L931.2 260 L953.5 264 L975.7 268 L980 268 L980 280 L40 280 Z" />
+            <!-- the elevation line (draws itself on scroll) -->
+            <path id="profileLine" class="profile-line" aria-hidden="true" d="M40 264 L62.3 262 L84.6 266 L106.8 260 L129.1 258 L151.4 256 L173.7 248 L196 236 L218.2 226 L240.5 218 L262.8 212 L285.1 196 L307.4 178 L329.6 164 L351.9 176 L374.2 188 L396.5 198 L418.8 182 L441 164 L463.3 148 L485.6 136 L507.9 144 L530.2 160 L552.4 176 L574.7 192 L597 204 L619.3 214 L641.6 224 L663.8 232 L686.1 234 L708.4 236 L730.7 228 L753 218 L775.2 202 L797.5 186 L819.8 200 L842.1 216 L864.4 232 L886.6 244 L908.9 252 L931.2 260 L953.5 264 L975.7 268 L980 268" />
+            <!-- runner dot, moved along the line by scroll -->
+            <g id="runnerDot" class="runner-dot" aria-hidden="true" transform="translate(40 264)">
+              <circle r="7" class="runner-halo" />
+              <circle r="4" class="runner-core" />
+            </g>
+            <!-- interactive markers (populated with data by course.ts; usable without JS as labelled points) -->
+            <g id="markerLayer" class="marker-layer"></g>
+          </svg>
+          <figcaption id="profile-cap" class="profile-cap mono">
+            <span>ELEVATION — CITY SURVEY DATUM, 2× VERTICAL</span>
+            <span>LOW 6 m · HIGH 72 m · GAIN 187 m</span>
+          </figcaption>
+        </figure>
+
+        <div class="course-side">
+          <aside id="courseReadout" class="readout reveal" aria-live="polite" aria-label="Course marker details">
+            <p class="readout-km mono" id="roKm">KM 20.0 · ELE 72 m</p>
+            <h3 class="readout-name" id="roName">Reservoir Hill</h3>
+            <p class="readout-grade mono" id="roGrade">summit — it's downhill-ish from here</p>
+            <p class="readout-note" id="roNote">The highest point on the course and the reason your
+              training plan had hill repeats in it.</p>
+            <p class="readout-eta mono" id="roEta" hidden></p>
+          </aside>
+
+          <figure class="ribbon-fig reveal">
+            <svg id="ribbonSvg" class="ribbon-svg" viewBox="0 0 360 320" aria-hidden="true" focusable="false">
+              <path id="ribbonPath" class="ribbon-path" d="M46 292 V232 H128 V172 H70 V116 H160 V60 H252 V118 H312 V178 H236 V236 H296 V292 H200" />
+              <circle class="ribbon-start" cx="46" cy="292" r="7" />
+              <g class="ribbon-finish" transform="translate(200 292)">
+                <rect x="-7" y="-7" width="14" height="14" />
+                <rect x="-7" y="-7" width="7" height="7" class="rf-check" />
+                <rect x="0" y="0" width="7" height="7" class="rf-check" />
+              </g>
+              <g id="ribbonTicks"></g>
+              <g class="ribbon-labels">
+                <text x="58" y="308">DOCKLANDS</text>
+                <text x="60" y="104">MILLBANK</text>
+                <text x="166" y="50">RESERVOIR</text>
+                <text x="322" y="166" text-anchor="end" transform="rotate(90 322 166)">RIVERSIDE</text>
+                <text x="212" y="308">CIVIC SQ.</text>
+              </g>
+            </svg>
+            <figcaption class="ribbon-cap mono">THE ROUTE — POINT TO POINT, DOCKLANDS → CIVIC SQUARE</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ pace calculator ============ -->
+  <section id="pace" class="pace">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker mono reveal">[ Pace ]</p>
+        <h2 class="reveal">Do the math before<br />the math does you.</h2>
+        <p class="lede reveal">Give the calculator a goal time and it hands back every split and the
+          clock time you'll pass each borough. Or give it your pace and it tells you when you'll hear
+          the tape. Pick a strategy — the back half of this course rewards patience.</p>
+      </div>
+
+      <div class="pace-grid">
+        <form id="paceForm" class="pace-panel reveal" novalidate>
+          <fieldset class="seg" id="modeSeg">
+            <legend class="mono">Start from</legend>
+            <div class="seg-row" role="presentation">
+              <input type="radio" id="modeGoal" name="mode" value="goal" checked />
+              <label for="modeGoal">Goal time</label>
+              <input type="radio" id="modePace" name="mode" value="pace" />
+              <label for="modePace">Pace</label>
+            </div>
+          </fieldset>
+
+          <div class="field" id="goalField">
+            <label class="mono" for="inGoal">Goal time <span class="field-hint">h:mm:ss</span></label>
+            <input id="inGoal" name="goal" type="text" inputmode="numeric" autocomplete="off"
+                   value="4:00:00" placeholder="3:59:00" aria-describedby="paceErr" />
+          </div>
+
+          <div class="field field-pace" id="paceField" hidden>
+            <label class="mono" for="inPace">Pace <span class="field-hint">m:ss</span></label>
+            <div class="pace-row">
+              <input id="inPace" name="pace" type="text" inputmode="numeric" autocomplete="off"
+                     value="5:41" placeholder="5:41" aria-describedby="paceErr" />
+              <label class="sr-only" for="inPaceUnit">Pace unit</label>
+              <select id="inPaceUnit" name="paceUnit">
+                <option value="km" selected>/ km</option>
+                <option value="mi">/ mi</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset class="seg" id="stratSeg">
+            <legend class="mono">Strategy</legend>
+            <div class="seg-row" role="presentation">
+              <input type="radio" id="stratEven" name="strategy" value="0" checked />
+              <label for="stratEven">Even</label>
+              <input type="radio" id="stratNeg" name="strategy" value="-0.02" />
+              <label for="stratNeg">Negative −2%</label>
+              <input type="radio" id="stratPos" name="strategy" value="0.02" />
+              <label for="stratPos">Positive +2%</label>
+            </div>
+            <p class="seg-note mono" id="stratNote">even — same pace, gun to tape</p>
+          </fieldset>
+
+          <button class="btn btn-primary btn-block" type="submit">Calculate my splits</button>
+          <p class="pace-err mono" id="paceErr" role="alert" hidden></p>
+          <noscript><p class="pace-noscript">The calculator needs JavaScript. Rule of thumb:
+            a 4:00 marathon is 5:41 / km or 9:09 / mi — hold it through Reservoir Hill and
+            you'll come home with change.</p></noscript>
+        </form>
+
+        <div class="pace-out reveal" aria-live="polite">
+          <div class="pace-head">
+            <p class="pace-big" id="paceBig">5:41 <span class="pace-big-unit">/ km</span></p>
+            <p class="pace-sub mono" id="paceSub">9:09 / mi · tape at 11:00:00 on the town clock</p>
+          </div>
+          <div class="splits-tools">
+            <span class="mono splits-title">SPLITS</span>
+            <div class="seg seg-mini" role="group" aria-label="Split table units">
+              <div class="seg-row" role="presentation">
+                <input type="radio" id="unitKm" name="tableUnit" value="km" checked />
+                <label for="unitKm">km</label>
+                <input type="radio" id="unitMi" name="tableUnit" value="mi" />
+                <label for="unitMi">mi</label>
+              </div>
+            </div>
+          </div>
+          <div class="splits-scroll">
+            <table class="splits-table">
+              <caption class="sr-only">Projected splits at each course checkpoint</caption>
+              <thead>
+                <tr><th scope="col">Mark</th><th scope="col">On course</th><th scope="col">Elapsed</th><th scope="col">Clock</th></tr>
+              </thead>
+              <tbody id="splitsBody">
+                <tr><td class="mono">5 km</td><td>Cannery Flats</td><td class="mono">0:28:26</td><td class="mono">07:28</td></tr>
+                <tr><td class="mono">10 km</td><td>Millbank Rise</td><td class="mono">0:56:52</td><td class="mono">07:56</td></tr>
+                <tr><td class="mono">Half</td><td>Aqueduct Arch</td><td class="mono">2:00:00</td><td class="mono">09:00</td></tr>
+                <tr><td class="mono">Finish</td><td>Civic Square</td><td class="mono">4:00:00</td><td class="mono">11:00</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="pace-fine mono">Clock times assume the 07:00 gun. Add your corral offset — corral E crosses ~14 min back.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ race weekend / expo ============ -->
+  <section id="weekend" class="weekend">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="kicker mono reveal">[ Race weekend ]</p>
+        <h2 class="reveal">Three days. One cannon.</h2>
+        <p class="lede reveal">Everything below happens within one tram ride of the start. Bib pickup
+          closes Saturday at 18:00 sharp — there is no race-morning pickup, and the volunteers who
+          enforce that rule have heard every excuse since 1979.</p>
+      </div>
+
+      <div class="days">
+        <article class="day reveal">
+          <h3 class="day-name">Friday<span class="day-date mono" data-dayoffset="-2">23 Oct</span></h3>
+          <ul class="sched">
+            <li><span class="sched-t mono">10:00</span><div><strong>Expo opens — Pier 9 Hall.</strong> Bib pickup, 60 exhibitors, and a wall printed with all 28,000 names. Find yours.</div></li>
+            <li><span class="sched-t mono">12:00</span><div><strong>Course talks, hourly.</strong> Twenty minutes, no slides: where the hills are, where the wind is, where the crowds carry you.</div></li>
+            <li><span class="sched-t mono">20:00</span><div><strong>Expo closes.</strong> Go to bed. You won't, but go to bed.</div></li>
+          </ul>
+        </article>
+
+        <article class="day reveal">
+          <h3 class="day-name">Saturday<span class="day-date mono" data-dayoffset="-1">24 Oct</span></h3>
+          <ul class="sched">
+            <li><span class="sched-t mono">08:00</span><div><strong>Shakeout 5K — Docklands.</strong> Easy pace, no timing, coffee at the turnaround. The elites usually show.</div></li>
+            <li><span class="sched-t mono">09:00</span><div><strong>Expo, day two.</strong> Last gels, last pins, last chance to buy the shoes you should not race in tomorrow.</div></li>
+            <li><span class="sched-t mono">18:00</span><div><strong>Bib pickup closes. Hard stop.</strong> Then long tables in Civic Square — the carb night is free with a bib.</div></li>
+          </ul>
+        </article>
+
+        <article class="day reveal day--race">
+          <h3 class="day-name">Sunday<span class="day-date mono day-date--hot" data-dayoffset="0">25 Oct — race day</span></h3>
+          <ul class="sched">
+            <li><span class="sched-t mono">04:30</span><div><strong>Transit runs free for bib holders.</strong> Every tram, every bus, straight to the Docklands.</div></li>
+            <li><span class="sched-t mono">05:30</span><div><strong>Corrals open.</strong> A through E, seeded by your entry estimate. Bag drop closes 06:30.</div></li>
+            <li><span class="sched-t mono">05:45</span><div><strong>Roads close, city-wide.</strong> They reopen rolling, behind the 7:30 / km sweep bus.</div></li>
+            <li><span class="sched-t mono">06:50</span><div><strong>Wheelchair start.</strong> The fastest anyone moves through Arden all year.</div></li>
+            <li><span class="sched-t mono">07:00</span><div><strong>The cannon.</strong> One shot from the harbour battery. You'll feel it in your chest. Run.</div></li>
+            <li><span class="sched-t mono">14:30</span><div><strong>Course closes — 7 h 30 cutoff.</strong> The finish festival in Civic Square keeps going until the last band stops.</div></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ register ============ -->
+  <section id="register" class="register">
+    <div class="wrap reg-grid">
+      <div class="reg-info">
+        <p class="kicker kicker--hot mono reveal">[ Register ]</p>
+        <h2 class="reveal">The line starts here.</h2>
+        <p class="reg-sub reveal">28,000 bibs, gone in about nine days last year. Entry includes chip
+          timing, sixteen aid stations, forty-two bands, free transit all weekend, and a finisher
+          medal cast from a retired tram rail. Really.</p>
+        <ul class="reg-list mono">
+          <li>Ballot-free — first come, first corralled</li>
+          <li>Deferral to next year, free, until 30 Sep</li>
+          <li>$4 of every bib goes to the borough crews who resurface the course</li>
+        </ul>
+      </div>
+      <div class="reg-form reveal" aria-live="polite">
+        <form id="regForm" novalidate>
+          <fieldset class="tiers">
+            <legend class="mono">Pick your entry</legend>
+            <div class="tier">
+              <input type="radio" id="tierOpen" name="tier" value="Open entry" checked />
+              <label for="tierOpen">
+                <span class="tier-top"><strong>Open entry</strong><span class="tier-price mono">$128</span></span>
+                <span class="tier-note">The standard bib. Chip, medal, transit, carb night.</span>
+              </label>
+            </div>
+            <div class="tier">
+              <input type="radio" id="tierLocal" name="tier" value="Arden resident" />
+              <label for="tierLocal">
+                <span class="tier-top"><strong>Arden resident</strong><span class="tier-price mono">$96</span></span>
+                <span class="tier-note">Show a borough postcode. The city runs its own race first.</span>
+              </label>
+            </div>
+            <div class="tier">
+              <input type="radio" id="tierCharity" name="tier" value="Charity 42" />
+              <label for="tierCharity">
+                <span class="tier-top"><strong>Charity 42</strong><span class="tier-price mono">$250+</span></span>
+                <span class="tier-note">Guaranteed entry, pledge to the Arden food network.</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label class="mono" for="rName">Name</label>
+            <input id="rName" name="name" type="text" required autocomplete="name" placeholder="As it should read on the bib" />
+          </div>
+          <div class="field">
+            <label class="mono" for="rEmail">Email</label>
+            <input id="rEmail" name="email" type="email" required autocomplete="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label class="mono" for="rFinish">Estimated finish <span class="field-hint">seeds your corral</span></label>
+            <select id="rFinish" name="finish">
+              <option>Under 3:00</option>
+              <option>3:00 – 3:30</option>
+              <option selected>3:30 – 4:00</option>
+              <option>4:00 – 4:45</option>
+              <option>4:45 – 5:30</option>
+              <option>5:30 + — the sweep bus fears me</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Claim my bib</button>
+          <p class="reg-fine mono" id="regFine">Demo form — nothing is sent, nobody is charged. See the README.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap foot-top">
+    <span class="foot-brand">Splits</span>
+    <nav class="foot-links" aria-label="Footer">
+      <a href="#course">Course</a><a href="#pace">Pace</a><a href="#weekend">Weekend</a><a href="#register">Register</a><a href="./guide/">Guide</a>
+    </nav>
+  </div>
+  <div class="wrap foot-bottom mono">
+    <span>© <span id="year">2026</span> Splits — a design-showcase concept. Arden is fictional; the hills, sadly, behave like real ones.</span>
+    <span>Designed &amp; built by Parable · <a href="./guide/">How this was built →</a></span>
+  </div>
+</footer>
+
+<script type="module" src="./src/main.ts"></script>
+</body>
+</html>

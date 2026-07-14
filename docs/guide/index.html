@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('splits-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>How Splits was built — Parable build guide</title>
+<meta name="description" content="A build guide for Splits: the idea, the Vite + TypeScript stack, the scroll-driven self-drawing elevation profile, the pace calculator math, and how to ship it on GitHub Pages." />
+<meta name="robots" content="index,follow" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23ffd23f'/%3E%3Cpath d='M8 24 L14 8 h4 L12 24 Z' fill='%2316181b'/%3E%3Cpath d='M16 24 L22 8 h4 L20 24 Z' fill='%23e0342b'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ease: cubic-bezier(.18, .89, .3, 1.04);
+    --font-d: "Anton", "Arial Narrow", sans-serif;
+    --font-b: "Inter", system-ui, sans-serif;
+    --font-m: "Martian Mono", ui-monospace, monospace;
+  }
+  :root[data-theme="light"] {
+    --bg: #f4f2ee; --bg-2: #ece9e2; --panel: #faf9f6;
+    --ink: #16181b; --dim: #43474d; --faint: #686d74;
+    --line: rgba(22, 24, 27, .16); --line-2: rgba(22, 24, 27, .08);
+    --accent: #ffd23f; --accent-ink: #16181b; --kick: #b3271c;
+  }
+  :root[data-theme="dark"] {
+    --bg: #16181b; --bg-2: #1b1e22; --panel: #1f2226;
+    --ink: #f4f2ee; --dim: #b4b8be; --faint: #83878e;
+    --line: rgba(244, 242, 238, .15); --line-2: rgba(244, 242, 238, .07);
+    --accent: #ffd23f; --accent-ink: #16181b; --kick: #ffd23f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font-b); font-size: clamp(15px, 1vw + 13px, 17px); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .film { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(110% 70% at 85% -10%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 62%); }
+  .film::after { content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(115deg, var(--line-2) 0 2px, transparent 2px 96px); opacity: .5; }
+  .mono { font-family: var(--font-m); }
+  .doc { position: relative; z-index: 1; width: min(100% - 2.4rem, 820px); margin: 2.2rem auto 5rem; }
+  .doc-back { display: inline-flex; align-items: center; gap: .4rem; color: var(--dim); text-decoration: none; font-size: .86rem; margin-bottom: 1.6rem; }
+  .doc-back:hover { color: var(--ink); }
+  .eyebrow { color: var(--kick); font-family: var(--font-m); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 .8rem; }
+  h1 { font-family: var(--font-d); font-weight: 400; text-transform: uppercase; line-height: .96; font-size: clamp(2.4rem, 6vw, 3.8rem); margin: .2rem 0 .5rem; }
+  h2 { font-family: var(--font-d); font-weight: 400; text-transform: uppercase; font-size: clamp(1.4rem, 3vw, 1.9rem); margin: 2.6rem 0 .6rem; }
+  .lede { color: var(--dim); font-size: 1.08rem; margin: 0 0 2rem; }
+  p { color: var(--dim); margin: .7rem 0; }
+  p strong, li strong { color: var(--ink); font-weight: 600; }
+  ul { color: var(--dim); padding-left: 1.1rem; margin: .7rem 0; }
+  li { margin: .4rem 0; }
+  a { color: inherit; }
+  a:focus-visible, .doc-back:focus-visible { outline: 3px solid var(--kick); outline-offset: 3px; border-radius: 4px; }
+  pre { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; margin: 1rem 0; }
+  code { font-family: var(--font-m); font-size: .78rem; }
+  pre code { color: var(--ink); line-height: 1.65; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.2rem 0 0; }
+  .tag-row span { font-family: var(--font-m); font-size: .68rem; padding: .3rem .6rem; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); }
+  .callout { border-left: 4px solid var(--kick); background: color-mix(in oklab, var(--accent) 8%, transparent); padding: .9rem 1.1rem; border-radius: 0 10px 10px 0; margin: 1.4rem 0; }
+  .callout p { margin: 0; color: var(--ink); }
+  .tape { height: 10px; margin: 1.8rem 0;
+    background: repeating-linear-gradient(-55deg, var(--accent) 0 14px, #101214 14px 28px);
+    border-block: 1px solid var(--line); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="film" aria-hidden="true"></div>
+<main class="doc">
+  <a class="doc-back" href="../">← Back to Splits</a>
+  <p class="eyebrow">[ Parable build guide ]</p>
+  <h1>How Splits was built</h1>
+  <p class="lede">A city marathon site with two working signatures: a <strong>course elevation
+    profile that draws itself as you scroll</strong> — runner dot riding the line, km markers
+    popping in as it passes them — and a <strong>pace calculator</strong> that turns a goal time
+    into every split on the course. Vite + vanilla TypeScript, no framework, no chart library.</p>
+
+  <div class="tag-row">
+    <span>vite + typescript</span><span>inline SVG, zero images</span><span>Anton / Inter / Martian Mono</span><span>light + dark</span><span>reduced-motion honest</span>
+  </div>
+
+  <div class="tape" aria-hidden="true"></div>
+
+  <h2>The idea</h2>
+  <p>Every race site shows an elevation chart as a static JPEG that runners squint at and screenshot.
+    But a marathon is experienced <em>in order</em> — the false flat, the climb, the summit, the sting
+    at 34 — so the chart should be too. Scrolling the page replays the course: the line draws from gun
+    to tape, and each named point surfaces as you "reach" it. The pace calculator closes the loop:
+    once you set a goal, the course readout tells you the clock time you'll crest Reservoir Hill.
+    The chart and the math talk to each other, which is the moment the site stops being a brochure.</p>
+
+  <h2>The stack</h2>
+  <p>Vite with vanilla TypeScript — no framework, because the whole thing is two interactive islands
+    and a pile of honest HTML. The elevation SVG is <strong>inline in the markup, fully drawn</strong>:
+    kill JavaScript and you still get the complete chart, the schedule, and every word of copy. The
+    modules (<code>course.ts</code>, <code>pace.ts</code>, <code>countdown.ts</code>, <code>reveal.ts</code>)
+    only add behavior. Type is Anton — a bib-number typeface if there ever was one — with Inter for
+    body and Martian Mono for anything a race official would print.</p>
+
+  <h2>Signature technique — the self-drawing course</h2>
+  <p>The profile path ships in the HTML with real coordinates (<code>x = 40 + km / 42.195 × 940</code>,
+    <code>y = 280 − ele × 2</code>). At runtime we measure the path, dash it to exactly its own length,
+    and feed the dash offset from scroll progress. The runner dot is the same trick inverted:
+    <code>getPointAtLength</code> converts progress back into a coordinate on the line — and its
+    x-position tells us which km markers the "runner" has passed.</p>
+  <pre><code>// course.ts — the draw, verbatim
+const lineLen = line.getTotalLength();
+line.style.strokeDasharray = `${lineLen}`;
+line.style.strokeDashoffset = `${lineLen}`;
+
+const update = (): void => {
+  const r = fig.getBoundingClientRect();
+  const vh = window.innerHeight;
+  const p = clamp((vh * 0.9 - r.top) / (vh * 0.75), 0, 1);
+  line.style.strokeDashoffset = `${lineLen * (1 - p)}`;
+  const pt = line.getPointAtLength(lineLen * p);
+  runner.setAttribute('transform', `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
+  groups.forEach((g, m) => {
+    if (pt.x >= m.x - 1) g.classList.add('is-past'); // marker pops in
+  });
+};
+addEventListener('scroll', onScroll, { passive: true }); // rAF-throttled</code></pre>
+  <p>The markers are real SVG <code>&lt;g role="button" tabindex="0"&gt;</code> elements — hover,
+    click, or Tab to one and the readout panel updates with the elevation, the grade, and what the
+    locals call that stretch. The pace calculator broadcasts a <code>splits:plan</code> event when it
+    recalculates; the readout listens and appends your projected arrival time at that marker.</p>
+
+  <h2>Details that matter</h2>
+  <ul>
+    <li><strong>No JS, no loss.</strong> The SVG is complete in the markup. The dash trick only ever
+      hides what JavaScript is about to reveal, and it's gated behind a <code>.js</code> class set
+      synchronously in <code>&lt;head&gt;</code>.</li>
+    <li><strong>Reduced motion is a render mode, not an apology.</strong> Under
+      <code>prefers-reduced-motion</code> the line ships fully drawn, every marker is visible, the
+      runner dot stands at the finish, and the race clock renders once instead of ticking. The CSS
+      backstops it with <code>stroke-dasharray: none !important</code> so no state can strand the
+      chart half-drawn.</li>
+    <li><strong>The pace math is a two-half model.</strong> Pick a strategy <code>d</code> (the
+      second-half pace multiplier − 1): <code>p1 = T / (H · (2 + d))</code>, <code>p2 = p1 · (1 + d)</code>.
+      The halves always sum back to the goal, so "Negative −2%" is honest arithmetic, not a label.</li>
+    <li><strong>The clock rolls over.</strong> Race day is computed as the fourth Sunday of October;
+      the morning after the course closes, the countdown quietly re-aims at next year. A template
+      that shows −212 days has stopped being a template.</li>
+    <li><strong>Scroll work is rAF-throttled</strong> and does no layout reads beyond one
+      <code>getBoundingClientRect</code> per frame. The dash draw is GPU-cheap — it's one stroke.</li>
+  </ul>
+
+  <div class="callout"><p>The registration form is a demo — it validates, confirms in place with a
+    fictional bib number, and sends nothing. Wire it to a real entry system before you take anyone's
+    money.</p></div>
+
+  <h2>Ship it on GitHub Pages</h2>
+  <p>Vite builds into <code>docs/</code> with <code>base: '/splits/'</code>, which is exactly the
+    shape GitHub Pages wants for a project site served from a subpath.</p>
+  <pre><code>npm run build          # tsc --noEmit && vite build  →  docs/
+git add docs && git commit -m "build"
+gh repo create bswxyz/splits --public --source . --push
+# Pages → deploy from branch → main /docs</code></pre>
+  <p>A <code>.nojekyll</code> in <code>public/</code> rides along into <code>docs/</code> so Pages
+    serves the build untouched, and this guide is a plain static page in <code>public/guide/</code> —
+    copied as-is, no bundling required.</p>
+
+  <a class="doc-back" href="../" style="margin-top:2.6rem">← Back to Splits</a>
+</main>
+</body>
+</html>

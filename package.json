@@ -1,0 +1,16 @@
+{
+  "name": "splits",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Splits — the Arden City Marathon. Parable design showcase.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^6.0.7"
+  }
+}
