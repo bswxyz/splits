@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>
   document.documentElement.classList.add('js');
-  try { var t = localStorage.getItem('splits-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { var t = localStorage.getItem('splits-theme'); if (!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark'; if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
 <title>Splits — the Arden City Marathon</title>
 <meta name="description" content="Splits is the Arden City Marathon: 42.195 km through six boroughs, one bad hill, and a finish line in Civic Square. Course profile, pace calculator, race weekend schedule and entry." />
@@ -17,8 +17,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <script type="module" crossorigin src="/splits/assets/index-vfyBVKgA.js"></script>
-  <link rel="stylesheet" crossorigin href="/splits/assets/index-CTZCtIJO.css">
+  <script type="module" crossorigin src="/splits/assets/index-Czv4lNEo.js"></script>
+  <link rel="stylesheet" crossorigin href="/splits/assets/index-DYK-6pbt.css">
 </head>
 <body>
 <div class="film" aria-hidden="true"></div>

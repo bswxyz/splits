@@ -24,7 +24,7 @@
   --panel: #faf9f6;
   --ink: #16181b;
   --dim: #43474d;
-  --faint: #686d74;
+  --faint: #5d626a;          /* 5.06:1 on --bg-2 — AA at 10px SVG labels */
   --line: rgba(22, 24, 27, .16);
   --line-2: rgba(22, 24, 27, .08);
   --accent: #ffd23f;
@@ -222,7 +222,7 @@ h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
 }
 .clock-lbl { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #9aa0a8; }
 .clock-colon { font-family: var(--font-d); font-size: clamp(1.8rem, 4vw, 2.6rem); color: #4a4f56; transform: translateY(-.35em); }
-.clock-foot { display: flex; justify-content: space-between; gap: .8rem; flex-wrap: wrap; font-size: .6rem; letter-spacing: .12em; color: #767c84; padding-bottom: .55rem; }
+.clock-foot { display: flex; justify-content: space-between; gap: .8rem; flex-wrap: wrap; font-size: .6rem; letter-spacing: .12em; color: #7f8894; padding-bottom: .55rem; }
 .clock-noscript { margin: .6rem 0 .8rem; font-size: .7rem; color: var(--yellow); }
 .clock-cap { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin: 0; }
 

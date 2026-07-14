@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <script>
   document.documentElement.classList.add('js');
-  try { var t = localStorage.getItem('splits-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  try { var t = localStorage.getItem('splits-theme'); if (!t && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) t = 'dark'; if (t) document.documentElement.dataset.theme = t; } catch (e) {}
 </script>
 <title>How Splits was built — Parable build guide</title>
 <meta name="description" content="A build guide for Splits: the idea, the Vite + TypeScript stack, the scroll-driven self-drawing elevation profile, the pace calculator math, and how to ship it on GitHub Pages." />
